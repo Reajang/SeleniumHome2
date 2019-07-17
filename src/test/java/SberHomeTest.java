@@ -7,7 +7,11 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -32,10 +36,6 @@ public class SberHomeTest extends AbstractTester{
                 webDrForm = String.format(webDrForm, "chrome");
                 System.setProperty(webDrForm, properties.getProperty(webDrForm));
                 driver = new ChromeDriver();
-                break;
-            case("opera"):
-                System.setProperty(String.format(webDrForm, "opera"), properties.getProperty(String.format(webDrForm, "opera")));
-                driver = new OperaDriver();
                 break;
             case("edge"):
                 webDrForm = String.format(webDrForm, "edge");
@@ -64,20 +64,17 @@ public class SberHomeTest extends AbstractTester{
     @Test
     public void SberTest() {
 
-        WebElement elem = findAndActivateElem("//span[contains(text(), 'Страхование')]/parent::*");
-
-        /*Point coordinates = elem.getLocation();
-        Robot robot = null;
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-        robot.mouseMove(coordinates.getX(),coordinates.getY()+200);
-        robot.mousePress(InputEvent.BUTTON1_MASK);*/
+        findAndActivateElem("//span[contains(text(), 'Страхование')]/parent::*");
+        /*Костыль для MS Edge. Не работает
+        WebElement elem = driver.findElement(By.xpath("//span[contains(text(), 'Страхование')]/parent::*"));
+        Actions moveMous = new Actions(driver);
+        moveMous.moveToElement(elem);
+        moveMous.perform();
+        WebDriverWait wait = new WebDriverWait(driver, 5, 1000);*/
+        //wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//span[contains(text(), 'Страхование')]/parent::*/following::*[contains(text(), 'Путешествия и покупки')][1]"))));
 
         findAndActivateElem("//span[contains(text(), 'Страхование')]/parent::*/following::*[contains(text(), 'Путешествия и покупки')][1]");
-        //robot.mouseRelease(InputEvent.BUTTON1_MASK);
+
         String res1 = "Страхование путешественников";
         Assert.assertEquals("\nНет надписи "+res1, res1, findAndActivateElem("//*[contains(text(),'Страхование путешественников')]").getText());
 
