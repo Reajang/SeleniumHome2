@@ -11,7 +11,8 @@ public abstract class AbstractTester {
 
 
     protected void changePage(String ref){
-        driver.get(ref);
+        //driver.get(ref);
+        driver.navigate().to(ref);
         driver.switchTo().window(driver.getWindowHandle());
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 

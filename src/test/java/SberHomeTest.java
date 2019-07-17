@@ -4,14 +4,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
 
+import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.opera.OperaDriver;
 
+import java.awt.*;
+import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -48,6 +52,7 @@ public class SberHomeTest extends AbstractTester{
         driver.get(properties.getProperty("url"));
         driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
     }
 
     @After
@@ -59,8 +64,20 @@ public class SberHomeTest extends AbstractTester{
     @Test
     public void SberTest() {
 
-        findAndActivateElem("//span[contains(text(), 'Страхование')]/parent::*");
+        WebElement elem = findAndActivateElem("//span[contains(text(), 'Страхование')]/parent::*");
+
+        /*Point coordinates = elem.getLocation();
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        robot.mouseMove(coordinates.getX(),coordinates.getY()+200);
+        robot.mousePress(InputEvent.BUTTON1_MASK);*/
+
         findAndActivateElem("//span[contains(text(), 'Страхование')]/parent::*/following::*[contains(text(), 'Путешествия и покупки')][1]");
+        //robot.mouseRelease(InputEvent.BUTTON1_MASK);
         String res1 = "Страхование путешественников";
         Assert.assertEquals("\nНет надписи "+res1, res1, findAndActivateElem("//*[contains(text(),'Страхование путешественников')]").getText());
 
